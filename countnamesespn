@@ -1,0 +1,23 @@
+import requests
+from bs4 import BeautifulSoup
+from collections import Counter
+
+# URL of the website to scrape
+url = 'https://fantasy.espn.com/games/tournament-challenge-bracket-2024/group?id=a7d7ec59-9152-44a2-bd3e-ec356062bbb3'
+
+# Send a GET request to the URL
+response = requests.get(url)
+
+# Parse the HTML content of the page
+soup = BeautifulSoup(response.content, 'html.parser')
+
+# Find all the elements containing names
+name_elements = soup.find_all('span', class_='player-column__headline')
+
+# Extract the text of each name element and count occurrences
+names = [name.text.strip() for name in name_elements]
+name_counts = Counter(names)
+
+# Print the name counts
+for name, count in name_counts.items():
+    print(f'{name}: {count}')
